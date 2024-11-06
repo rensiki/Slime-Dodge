@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -24,7 +23,7 @@ public class Player : MonoBehaviour
 
     int xPos = 0;
     float time = 0;
-    
+    float movingDelayTime = 1f;
 
 
 
@@ -80,22 +79,18 @@ public class Player : MonoBehaviour
 
                 //if문으로 2개 터치중 할 필요 없을듯 
                 //왜냐면 2개 터치중이 아닐때는 아래의 코드가 실행되지 않기 때문
-                    if (Input.gyro.rotationRateUnbiased.y > 2 && !isMoving)
-                    {
-                        Debug.Log("Right Dashed");
-                        PlayerMove(1);
-                        gameManager.turn++;
-                    }
-                    else if (Input.gyro.rotationRateUnbiased.y < -2 && !isMoving)
-                    {
-                        Debug.Log("Left Dashed");
-                        PlayerMove(-1);
-                        gameManager.turn++;
-
-                    }
-
-
-
+                if (Input.gyro.rotationRateUnbiased.y > 2 && !isMoving)
+                {
+                    Debug.Log("Right Dashed");
+                    PlayerMove(1);
+                    gameManager.addTurn();
+                }
+                else if (Input.gyro.rotationRateUnbiased.y < -2 && !isMoving)
+                {
+                    Debug.Log("Left Dashed");
+                    PlayerMove(-1);
+                    gameManager.addTurn();
+                }
 
                 //isTwoTouching을 false로 처리해주는 로직
 
@@ -104,19 +99,17 @@ public class Player : MonoBehaviour
                     DListouch1Ended = true;
                 }
             }
-        if(DListouch1Ended){
-            if(touch0.phase == TouchPhase.Ended)
-                {
-                    Debug.Log("둘다 땜");
-                    //두번 터치 후 딜레이를 줘서 공격이 실수로 실행되는것 방지
-                    //공격 딜레이랑 똑같긴 한데, 애니메이션 안넣었을때는 조금 어색함
-                    //턴 개념이랑 엮어서 애니메,사운드로 잘 보안하면 디버깅 성공일듯
-                    Invoke("TwoTouchDebuger", 0.5f);
-                    DListouch1Ended = false;
-                }
-        }
-
-        
+            if(DListouch1Ended){
+                if(touch0.phase == TouchPhase.Ended)
+                    {
+                        Debug.Log("둘다 땜");
+                        //두번 터치 후 딜레이를 줘서 공격이 실수로 실행되는것 방지
+                        //공격 딜레이랑 똑같긴 한데, 애니메이션 안넣었을때는 조금 어색함
+                        //턴 개념이랑 엮어서 애니메,사운드로 잘 보안하면 디버깅 성공일듯
+                        Invoke("TwoTouchDebuger", 0.5f);
+                        DListouch1Ended = false;
+                    }
+            }
         }
     }
 
@@ -128,7 +121,7 @@ public class Player : MonoBehaviour
 
     void PlayerMove(int dir)
     {
-        StartCoroutine(MovingDelay(0.5f));//calling moving로 대체 가능
+        StartCoroutine(MovingDelay(movingDelayTime));//calling moving로 대체 가능
         StartCoroutine(Moving(dir));
 
         //주어진dir에 따라 플레이어를 이동시킴
@@ -200,19 +193,13 @@ public class Player : MonoBehaviour
                     if (time < 0.1f && time > 0.0001f)
                     {
                         Debug.Log("공격");
-                        gameManager.turn++;
+                        gameManager.addTurn();
                     }
 
                     time = 0;
                     isAttackAble = false;
                 }
             }
-
-            
         }
     }
-
-   
-
-
 }

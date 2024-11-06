@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     }
 
     void Update(){
-        TurnCheck();
+        //TurnCheck();
     }
 
     void FixedUpdate()
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
 
         }
     }
-       
+    /*   
     void TurnCheck(){
         //Debug.Log(gm.turn);
 
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
 
         }
-    }
+    }*/
 
     IEnumerator E_Mover()
     {
