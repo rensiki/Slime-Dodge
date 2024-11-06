@@ -878,7 +878,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472ca97b03993a64da56ed0d6976fe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testing: 0
+  xMoveValue: 1
+  speed: 0.01
+  a: 5
+  movingDelayTime: 0.005
 --- !u!212 &1584689961
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -939,7 +942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584689957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.98, y: 0.47, z: 0}
+  m_LocalPosition: {x: 0, y: 0.001, z: 0}
   m_LocalScale: {x: 0.89284563, y: 0.49639648, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1091,7 +1094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd111026da8fe24c9dcecd19f520cc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turn: 0
   UITurn: {fileID: 1137353571}
   Slime1: {fileID: 8212496828952531783}
 --- !u!212 &8212496828952531780
