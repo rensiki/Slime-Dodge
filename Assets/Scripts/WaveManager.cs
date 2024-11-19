@@ -50,14 +50,6 @@ public class WaveManager : MonoBehaviour
         Wave rightWave = new Wave(copyList, waveSize);
         Wave leftWave = new Wave(copyList, waveSize);
 
-        for (int i = 0; i < waveSize; i++)
-        {
-            int curPattern = currentWave.getPattern(i);
-            foreach(int enemyIndex in curPattern)
-            {
-                SpwanEnemy(enemyIndex);
-            }
-        }
         Debug.Log("All waves completed!");
     }
     void SpwanEnemy(int enemyIndex)
