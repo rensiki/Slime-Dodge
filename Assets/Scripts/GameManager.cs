@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
 
 
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
-    int turnCounter = 0;
     float playerTurnTime = 0.5f;
     float enemyTurnTime = 0.5f;
     bool isPlayerTurn = false;
@@ -22,7 +21,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UITurn.text = "Turn : " + turn;
-        EnemyInstantiate();
     }
     public int getTurn()
     {
@@ -43,32 +41,6 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(enemyTurnTime);
         isEnemyTurn = false;
-    }
-
-    void EnemyInstantiate()
-    {
-        if (turn > turnCounter)
-        {
-            turnCounter = turn;
-            Invoke("InvokeSlime", 0.5f);
-        }
-        
-        
-        
-    }
-
-    void InvokeSlime()
-    {
-        if (turn == 3)
-        {
-            Debug.Log("s1생성3");
-            Instantiate(Slime1, new Vector2(0, 0), Slime1.transform.rotation);
-        }
-        if (turn == 5)
-        {
-            Debug.Log("s1생성5");
-            Instantiate(Slime1, new Vector2(2, 0), Slime1.transform.rotation);
-        }
     }
 
 }

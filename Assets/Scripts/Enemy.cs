@@ -3,88 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
-{
+{    
+    Rigidbody2D rigid;
 
-    public SpriteRenderer spriteRenderer;
-    public Sprite[] sprites;
-    public GameManager gm;
-    Transform E_trans;
+    public int xMoveValue = 1;
+    public float speed = 0.1f;
+    public float a = 5f;
+    public float movingDelayTime = 0.01f;
 
-
-    public int E_Turn=0;
-    int S1count = 0;
-    bool callingE_Move = false;
-    int E_xPos = 0;
-
-    public int test = 0;
-    void Awake(){
-        E_trans = GetComponent<Transform>();
-    }
-
-    void Update(){
-        //TurnCheck();
-    }
-
-    void FixedUpdate()
+    void Awake()
     {
-        SlerpMoving();
-    }
+        rigid = GetComponent<Rigidbody2D>();
+        //StartCoroutine(Test());
+        
 
-    void SlerpMoving()
+    }
+    void Update()
     {
-        if (callingE_Move)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("E_Move");
-            E_trans.position = Vector3.Slerp(new Vector3(E_trans.position.x, E_trans.position.y, E_trans.position.z), new Vector3(E_xPos, 0.001f, 0), 0.3f);
-
+            Debug.Log("Space");
+            StartCoroutine(MovingFunc(transform.position.x, xMoveValue, transform.position.y, getAbyxMove()));
         }
     }
-    /*   
-    void TurnCheck(){
-        //Debug.Log(gm.turn);
 
-        if(gm.turn > E_Turn)
+    float getAbyxMove(){
+        if (xMoveValue == 1 || xMoveValue == -1)
         {
-            Debug.Log("턴체크");
-            E_Turn = gm.turn;
-
-
-            if(gameObject.tag == "Slime1")
-            {
-                if(S1count == 0)
-                {
-                    spriteRenderer.sprite = sprites[1];
-                    Debug.Log("s1웅크림");
-                    S1count = 1;
-                }   
-                else if(S1count == 1)//두번째 턴부터 점프. 착각 주의
-                {
-                    spriteRenderer.sprite = sprites[2];//점프 스프라이트 필요
-                    Debug.Log("s1점프");
-                    StartCoroutine(E_Mover());
-                }
-
-            }
-
-
-
+            return a;
         }
-    }*/
-
-    IEnumerator E_Mover()
-    {
-        Debug.Log("E_Mover");
-        E_trans.position = new Vector3(E_trans.position.x, E_trans.position.y, E_trans.position.z);
-        callingE_Move = true;
-        yield return new WaitForSeconds(0.5f);
-        callingE_Move = false;
-        Debug.Log("E_MoverEnd");
-
-        S1count = 0;
-        spriteRenderer.sprite = sprites[0];
+        else if (xMoveValue == 2 || xMoveValue == -2)
+        {
+            return a * 0.5f;
+        }
+        else if (xMoveValue == 3 || xMoveValue == -3)
+        {
+            return a * 0.3f;
+        }
+        else if (xMoveValue == 4 || xMoveValue == -4)
+        {
+            return a * 0.2f;
+        }
+        return 0;//에러케이스
+        Debug.Log("xMove 범위 에러");
     }
 
 
+
+    IEnumerator MovingFunc(float origin, float xMoveValue, float Yorigin, float A = 1, float x=0, float y=0)  
+    {
+        while ((xMoveValue>0&&x < xMoveValue) || (xMoveValue < 0 && x > xMoveValue))
+        {
+            x += speed * xMoveValue;//2차함수에서의 점의 x축 방향 이동
+            y = -A * (x - 0) * (x - (xMoveValue)); 
+            //Debug.Log("x : " + (origin + x) + " y : " + (Yorigin + y));
+
+            // 오브젝트 위치 갱신
+            transform.position = new Vector3(origin + x, Yorigin + y, transform.position.z);
+            yield return new WaitForSeconds(movingDelayTime);
+        }
+        //약간의 오차를 의도했던 값으로 이동시킴으로써 조정
+        transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
+    }
 
 
     
