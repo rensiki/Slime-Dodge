@@ -6,13 +6,16 @@ public class WaveManager : MonoBehaviour
 {
     public class Wave
     {
-        public int waveSize;
+        private int waveSize;
         
         private int[] enemyPattern;
+        private int patternIndex = 0;
+        private Transform spawnPoint;
 
-        public Wave(List<GameObject> enemyList, int waveSize)
+        public Wave(List<GameObject> enemyList, int waveSizem, Transform SpawnPoint)
         {
             this.waveSize = waveSize;
+            spawnPoint = SpawnPoint;
             //패턴 생성. 받은 enemy 종류의 개수, n에 따라 0에서 n까지의 값을 가짐 
             makePattern(enemyList.Count);
 
@@ -27,34 +30,30 @@ public class WaveManager : MonoBehaviour
             }
         }
 
-        public int getPattern(int index)
+        public int getCurrentPattern()
         {
-            return enemyPattern[index];
+            return enemyPattern[patternIndex];
+            patternIndex++;
         }
     }
 
-    private int stage;
+    private int stage = -1;
+    private int waveSize = 10;
 
-    public Transform spawnPoint;
-    public List<GameObject> enemyGameObjects;
-
-    private Wave currentWave;
-    private int waveSize = 0;
+    public Transform rightSpawnPoint;
+    public Transform leftSpawnPoint;
+    public List<GameObject> enemyGameObjects;//0부터 10까지 총 11가지 적을 가지고 있음
+    
 
     private void StartWave()
     {
-        stage = 0;
+        stage++;
         waveSize = 10;
         //stage가 증가한만큼 적의 종류도 증가
         List<GameObject> copyList = enemyGameObjects.GetRange(0, stage);
-        Wave rightWave = new Wave(copyList, waveSize);
-        Wave leftWave = new Wave(copyList, waveSize);
+        Wave rightWave = new Wave(copyList, waveSize, rightSpawnPoint);
+        Wave leftWave = new Wave(copyList, waveSize, leftSpawnPoint);
 
         Debug.Log("All waves completed!");
-    }
-    void SpwanEnemy(int enemyIndex)
-    {
-        //스폰
-        Instantiate(enemyGameObjects[enemyIndex], spawnPoint.position, spawnPoint.rotation);
     }
 }
