@@ -6,9 +6,9 @@ public class Enemy : MonoBehaviour
 {    
     Rigidbody2D rigid;
 
-    public int xMoveValue = 1;
-    public float speed = 0.1f;
-    public float a = 5f;
+    public int xMoveValue = 1;//x축으로 이동하는 거리
+    public float speed = 0.1f;//이동하는 속도
+    public float a = 5f;//2차함수의 a값. 즉 곡선의 높이
     public float movingDelayTime = 0.01f;
 
     void Awake()

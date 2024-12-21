@@ -54,11 +54,6 @@ public class WaveManager : MonoBehaviour
     Wave leftWave;
     Wave rightWave;
 
-    public Transform rightSpawnPoint;
-    public Transform leftSpawnPoint;
-    public List<GameObject> enemyGameObjects;//0부터 9까지 총 10가지 적을 가지고 있음
-
-
     void Update() {
         if (Input.GetKeyDown(KeyCode.Space)&&!nowStage)
         {
@@ -90,10 +85,14 @@ public class WaveManager : MonoBehaviour
             {
                 if (leftPattern != -1)
                 {
+                    //test
+                    Instantiate(GameManager.Instance.pool.Get(leftPattern));
                     Debug.Log("Left Pattern : " + leftPattern);
                 }
                 if (rightPattern != -1)
                 {
+                    //test
+                    Instantiate(GameManager.Instance.pool.Get(rightPattern));
                     Debug.Log("Right Pattern : " + rightPattern);
                 }
             }

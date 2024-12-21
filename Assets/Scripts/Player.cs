@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     Transform trans;
 
-    public GameManager gameManager;
 
 
     bool isMoving = false;
@@ -73,13 +72,13 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("Right Dashed");
                     PlayerMove(1);
-                    gameManager.addTurn();
+                    GameManager.Instance.addTurn();
                 }
                 else if (Input.gyro.rotationRateUnbiased.y < -2 && !isMoving)
                 {
                     Debug.Log("Left Dashed");
                     PlayerMove(-1);
-                    gameManager.addTurn();
+                    GameManager.Instance.addTurn();
                 }
 
                 //isTwoTouching을 false로 처리해주는 로직
@@ -183,7 +182,7 @@ public class Player : MonoBehaviour
                     if (time < 0.1f && time > 0.0001f)
                     {
                         Debug.Log("공격");
-                        gameManager.addTurn();
+                        GameManager.Instance.addTurn();
                     }
 
                     time = 0;
