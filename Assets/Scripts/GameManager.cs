@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     {
         turn++;
         wave.SpwanEnemy();
+        pool.PoolsMoving();
         StartCoroutine(TurnChecker());
     }
 

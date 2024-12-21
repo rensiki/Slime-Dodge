@@ -41,4 +41,25 @@ public class PoolManager : MonoBehaviour
         }
         return select;
     }
+
+    public void Release(GameObject obj)//이건 왜필요하지? 알아서 도착하면 비활성화 되지않나?=>아 플레이어에 의한 사망 처리!
+    {
+        obj.SetActive(false);
+    }
+
+    public void PoolsMoving()
+    {
+        for(int i = 0; i < pools.Length; i++)
+        {
+            foreach(GameObject item in pools[i])
+            {
+                if(item.activeSelf)
+                {
+                    Debug.Log("pool moving");
+                    Enemy enemy = item.GetComponent<Enemy>();
+                    enemy.StartCoroutine(enemy.MovingFunc());
+                }
+            }
+        }
+    }
 }

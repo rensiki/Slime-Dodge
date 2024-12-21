@@ -53,6 +53,8 @@ public class WaveManager : MonoBehaviour
     bool nowStage = false;
     Wave leftWave;
     Wave rightWave;
+    public Transform leftSpawnPoint;
+    public Transform rightSpawnPoint;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Space)&&!nowStage)
@@ -86,13 +88,18 @@ public class WaveManager : MonoBehaviour
                 if (leftPattern != -1)
                 {
                     //test
-                    Instantiate(GameManager.Instance.pool.Get(leftPattern));
+                    GameObject left = GameManager.Instance.pool.Get(leftPattern);
+                    left.transform.position = leftSpawnPoint.position;
+                    left.transform.rotation = leftSpawnPoint.rotation;//기본적으로 오른쪽으로 이동이기 때문에 설정 필요 없음
                     Debug.Log("Left Pattern : " + leftPattern);
                 }
                 if (rightPattern != -1)
                 {
                     //test
-                    Instantiate(GameManager.Instance.pool.Get(rightPattern));
+                    GameObject right = GameManager.Instance.pool.Get(rightPattern);
+                    right.transform.position = rightSpawnPoint.position;
+                    right.transform.rotation = rightSpawnPoint.rotation;
+                    right.GetComponent<Enemy>().reverse_xMoveValue();//왼쪽으로 이동하도록 변경해야 하기 때문에 음수로 바꿔줌
                     Debug.Log("Right Pattern : " + rightPattern);
                 }
             }
