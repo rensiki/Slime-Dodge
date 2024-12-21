@@ -25,11 +25,6 @@ public class Player : MonoBehaviour
     float time = 0;
     float movingDelayTime = 1f;
 
-
-
-
-
-
     void Awake()
     {
         Input.gyro.enabled = true; // enable gyro
@@ -40,11 +35,6 @@ public class Player : MonoBehaviour
 
         trans.position = Vector2.Lerp(trans.position
         , new Vector2(3, trans.position.y), 0.3f);
-
-
-        
-
-
     }
 
     void Update()

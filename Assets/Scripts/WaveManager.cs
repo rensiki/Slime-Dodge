@@ -6,54 +6,97 @@ public class WaveManager : MonoBehaviour
 {
     public class Wave
     {
-        private int waveSize;
-        
-        private int[] enemyPattern;
-        private int patternIndex = 0;
-        private Transform spawnPoint;
+        int waveSize = 0;
+        int patternSize = 0;
+        int patternIndex = 0;
+        List<int> enemyPattern = new List<int>();
 
-        public Wave(List<GameObject> enemyList, int waveSizem, Transform SpawnPoint)
+        public Wave(){}
+
+        public Wave(int waveSize, int patternSize)
         {
             this.waveSize = waveSize;
-            spawnPoint = SpawnPoint;
-            //패턴 생성. 받은 enemy 종류의 개수, n에 따라 0에서 n까지의 값을 가짐 
-            makePattern(enemyList.Count);
-
+            this.patternSize = patternSize;
+            Debug.Log(this.patternSize);
+            makePattern();
         }
 
-        void makePattern(int listSize)
+        void makePattern()
         {
-            enemyPattern = new int[waveSize];
-            for (int i = 0; i < waveSize; i++)
+            for(int i = 0; i < waveSize; i++)
             {
-                enemyPattern[i] = Random.Range(0, listSize);
+                //Debug.Log(Random.Range(0, patternSize));
+                enemyPattern.Add(Random.Range(0, patternSize));//0부터 patternSize-1까지의 랜덤한 숫자를 생성
+            }
+            Debug.Log("Pattern created!");
+            for(int i = 0; i < waveSize; i++)
+            {
+                Debug.Log(enemyPattern[i]);
             }
         }
 
         public int getCurrentPattern()
-        {
-            return enemyPattern[patternIndex];
+        {  
+            if (patternIndex >= waveSize)
+            {
+                Debug.Log("Wave completed!");
+                return -1;
+            }
+            int patternValue = enemyPattern[patternIndex];
             patternIndex++;
+            return patternValue;
         }
     }
 
-    private int stage = -1;
-    private int waveSize = 10;
+    int stage = 0;
+    int waveSize = 10;
+    bool nowStage = false;
+    Wave leftWave;
+    Wave rightWave;
 
     public Transform rightSpawnPoint;
     public Transform leftSpawnPoint;
-    public List<GameObject> enemyGameObjects;//0부터 10까지 총 11가지 적을 가지고 있음
-    
+    public List<GameObject> enemyGameObjects;//0부터 9까지 총 10가지 적을 가지고 있음
 
-    private void StartWave()
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)&&!nowStage)
+        {
+            StartStage();
+        }
+    }
+
+    void StartStage()
     {
         stage++;
-        waveSize = 10;
-        //stage가 증가한만큼 적의 종류도 증가
-        List<GameObject> copyList = enemyGameObjects.GetRange(0, stage);
-        Wave rightWave = new Wave(copyList, waveSize, rightSpawnPoint);
-        Wave leftWave = new Wave(copyList, waveSize, leftSpawnPoint);
+        waveSize = stage*5;
+        leftWave = new Wave(waveSize, stage);
+        rightWave = new Wave(waveSize, stage);
+        nowStage = true;
+    }
 
-        Debug.Log("All waves completed!");
+    public void SpwanEnemy()
+    {
+        if (nowStage)
+        {
+            int leftPattern = leftWave.getCurrentPattern();
+            int rightPattern = rightWave.getCurrentPattern();
+            if (leftPattern == -1 && rightPattern == -1)
+            {
+                nowStage = false;
+                Debug.Log("All waves completed!");
+            }
+            else
+            {
+                if (leftPattern != -1)
+                {
+                    Debug.Log("Left Pattern : " + leftPattern);
+                }
+                if (rightPattern != -1)
+                {
+                    Debug.Log("Right Pattern : " + rightPattern);
+                }
+            }
+        }
     }
 }
