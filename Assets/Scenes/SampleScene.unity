@@ -827,7 +827,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3
+  orthographic size: 2.9338574
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -851,7 +851,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 1.82, z: -10}
+  m_LocalPosition: {x: 0, y: 1.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1039,6 +1039,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd553ca91b938b0498e1c28e46ea6566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftSpawnPoint: {fileID: 1149266257}
+  rightSpawnPoint: {fileID: 1129121376}
 --- !u!4 &680496637
 Transform:
   m_ObjectHideFlags: 0
@@ -1532,7 +1534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1129121376}
   m_Layer: 0
-  m_Name: leftSpawnPoint
+  m_Name: rightSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1698,7 +1700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1149266257}
   m_Layer: 0
-  m_Name: rightSpawnPoint
+  m_Name: leftSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1711,14 +1713,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1149266256}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1216086578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1753,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: 1565702894747316743, guid: b7e54e4d91f3eff4d82597145c5447bc, type: 3}
   - {fileID: 4559129916282962737, guid: 3a2f523a75a5a2c4da7a6b9839455bf3, type: 3}
+  - {fileID: 449225216339831168, guid: a9b4bc78a5b58cf4496b81d04a1fb7da, type: 3}
 --- !u!4 &1216086580
 Transform:
   m_ObjectHideFlags: 0

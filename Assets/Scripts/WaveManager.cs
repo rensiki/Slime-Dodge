@@ -72,6 +72,13 @@ public class WaveManager : MonoBehaviour
         nowStage = true;
     }
 
+    void SpwanPointChange(){
+        //왼쪽 스폰포인트 변경
+        leftSpawnPoint.position = new Vector3(leftSpawnPoint.position.x, Random.Range(-4.5f, 4.5f), leftSpawnPoint.position.z);
+        //오른쪽 스폰포인트 변경
+        rightSpawnPoint.position = new Vector3(rightSpawnPoint.position.x, Random.Range(-4.5f, 4.5f), rightSpawnPoint.position.z);
+    }
+
     public void SpwanEnemy()
     {
         if (nowStage)

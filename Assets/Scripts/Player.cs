@@ -29,11 +29,6 @@ public class Player : MonoBehaviour
         Input.gyro.enabled = true; // enable gyro
         trans = GetComponent<Transform>(); // get transform
         rb = GetComponent<Rigidbody2D>(); // get rigidbody
-
-        //test
-
-        trans.position = Vector2.Lerp(trans.position
-        , new Vector2(3, trans.position.y), 0.3f);
     }
 
     void Update()

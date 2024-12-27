@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         //StartCoroutine(Test());
-        
+        a = getAbyxMove(a);
 
     }
     void Update()
@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour
         float origin = transform.position.x;//호출시점 x위치
         float Yorigin = transform.position.y;//호출시점 y위치
         float x = 0; float y = 0;//이동하는 과정에서의 변하는 x,y값
-        a = getAbyxMove(1);
+    
 
         if (origin >= endx && xMoveValue > 0)
         {
