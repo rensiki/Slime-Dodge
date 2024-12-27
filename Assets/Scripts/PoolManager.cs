@@ -55,7 +55,7 @@ public class PoolManager : MonoBehaviour
             {
                 if(item.activeSelf)
                 {
-                    Debug.Log("pool moving");
+                    //Debug.Log("pool moving");
                     Enemy enemy = item.GetComponent<Enemy>();
                     enemy.StartCoroutine(enemy.MovingFunc());
                 }

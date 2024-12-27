@@ -177,7 +177,7 @@ public class Player : MonoBehaviour
                     if (time < 0.1f && time > 0.0001f)
                     {
                         Debug.Log("공격");
-                        GameManager.Instance.addTurn();
+                        //GameManager.Instance.addTurn();//공격시 턴을 추가하지 않지만, 바라보는 방향에만 공격 가능한 한계부여하자.
                     }
 
                     time = 0;

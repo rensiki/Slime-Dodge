@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
         a = getAbyxMove(a);
 
     }
+    /*테스트용
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -28,7 +29,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Space");
             StartCoroutine(MovingFunc());
         }
-    }
+    }*/
 
     public void reverse_xMoveValue()//근데 변수가 public이라 큰 의미 없음
     {
@@ -71,12 +72,12 @@ public class Enemy : MonoBehaviour
 
         if (origin >= endx && xMoveValue > 0)
         {
-            Debug.Log("도착상태라 사라짐");
+            //Debug.Log("도착상태라 사라짐");
             EnemyActiveFalse();
         }
         else if(origin <= -endx && xMoveValue < 0)
         {
-            Debug.Log("도착상태라 사라짐");
+            //Debug.Log("도착상태라 사라짐");
             EnemyActiveFalse();
         }
 

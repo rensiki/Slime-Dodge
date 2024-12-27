@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public void addTurn()
     {
         turn++;
+        //wave.SpwanPointChange();
         wave.SpwanEnemy();
         pool.PoolsMoving();
         StartCoroutine(TurnChecker());
