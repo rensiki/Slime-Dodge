@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
     {
         if(xPos>-8&&xPos<8){
             xPos += Pdir;
-            Debug.Log(xPos);
+            //Debug.Log(xPos);
         }
         else{
             trans.position = new Vector2(0,0);

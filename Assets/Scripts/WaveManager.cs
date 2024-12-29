@@ -77,7 +77,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    void StartStage()
+    public void StartStage()
     {
         stage++;
         waveSize = stage*5;
@@ -131,7 +131,7 @@ public class WaveManager : MonoBehaviour
                     if(SpawnPointRaycast(rightSpawnPoint))//스폰포인트에 적이 있으면 스폰하지 않음
                     {
                         Debug.Log("rightSpawnPoint is blocked!");
-                    }
+                    } 
                     else{
                         //test
                         GameObject right = GameManager.Instance.pool.Get(rightPattern);
@@ -152,6 +152,8 @@ public class WaveManager : MonoBehaviour
         {
             if(hit.collider.tag == "Enemy")
             {
+                Debug.Log(hit.collider.name);
+                hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
                 return true;
             }
         }
