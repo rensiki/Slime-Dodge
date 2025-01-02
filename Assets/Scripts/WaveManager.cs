@@ -153,7 +153,7 @@ public class WaveManager : MonoBehaviour
             if(hit.collider.tag == "Enemy")
             {
                 Debug.Log(hit.collider.name);
-                hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
+                //hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
                 return true;
             }
         }
