@@ -75,10 +75,19 @@ public class WaveManager : MonoBehaviour
         {
             StartStage();
         }
+        if (Input.GetKeyDown(KeyCode.Return)&&!nowStage)
+        {
+            stage++;//디버그용 스테이지 증가 코드
+        }
     }
 
     public void StartStage()
     {
+        if(nowStage)
+        {
+            Debug.Log("Already started!");
+            return;
+        }
         stage++;
         waveSize = stage*5;
         leftWave = new Wave(waveSize, stage);
@@ -147,13 +156,17 @@ public class WaveManager : MonoBehaviour
     }
     bool SpawnPointRaycast(Transform trans){
         //Debug.Log("Raycast");
-        RaycastHit2D hit = Physics2D.Raycast(trans.position, new Vector3(0,0,-1), 10);
-        if (hit.collider != null)
+        Vector3 rayPosition = new Vector3(trans.position.x, trans.position.y, 5);//ray의 시작이 z축으로 5만큼 여유공간 있도록 설정정
+        
+        RaycastHit2D hit = Physics2D.Raycast(rayPosition, new Vector3(0,0,-1), 10);
+        Debug.DrawRay(rayPosition, new Vector3(0,0,-1) * 10, Color.red, 5f);
+
+        if (hit.collider != null) 
         {
             if(hit.collider.tag == "Enemy")
             {
                 Debug.Log(hit.collider.name);
-                //hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
+                hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
                 return true;
             }
         }
