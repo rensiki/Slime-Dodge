@@ -60,7 +60,7 @@ public class WaveManager : MonoBehaviour
 
     int stage = 0;
     int waveSize = 10;
-    bool nowStage = false;//pool에서 적을 소환할지 말지 결정하는 변수.. 스테이지가 진행중인지 아닌지는 명확히 모름... 수정 필요
+    public bool nowStage = false;//pool에서 적을 소환할지 말지 결정하는 변수.. 스테이지가 진행중인지 아닌지는 명확히 모름... 수정 필요=>false로 바꿔주는 코드를 제거하고 poolmanager에서 접근할 수 있도록 변경해야함
     Wave leftWave;
     Wave rightWave;
     public Transform leftSpawnPoint;
@@ -115,18 +115,13 @@ public class WaveManager : MonoBehaviour
         {
             int leftPattern = leftWave.getCurrentPattern();
             int rightPattern = rightWave.getCurrentPattern();
-            if (leftPattern == -1 && rightPattern == -1)//모든 웨이브가 끝나면 스테이지 종료
-            {
-                nowStage = false;
-                Debug.Log("All waves completed!");
-            }
-            else
-            {
-                SpwanPointChange();//스폰포인트 위치 변경
+            SpwanPointChange();//스폰포인트 위치 변경
 
+            if (isLeft)
+            {
                 if (leftPattern != -1)
                 {
-                    if(SpawnPointRaycast(leftSpawnPoint))//스폰포인트에 적이 있으면 스폰하지 않음==>확률적으로 소환을 잠시 쉼(물론 스폰포인트 이동으로 인해 상쇄될 수 있음)
+                    if (SpawnPointRaycast(leftSpawnPoint))//스폰포인트에 적이 있으면 스폰하지 않음==>확률적으로 소환을 잠시 쉼(물론 스폰포인트 이동으로 인해 상쇄될 수 있음)
                     {
                         Debug.Log("leftSpawnPoint is blocked!");
                     }
@@ -140,13 +135,18 @@ public class WaveManager : MonoBehaviour
                         Debug.Log("Left Pattern : " + leftPattern);
                     }
                 }
+                isLeft = false;
+            }
+            else
+            {
                 if (rightPattern != -1)
                 {
-                    if(SpawnPointRaycast(rightSpawnPoint))//스폰포인트에 적이 있으면 스폰하지 않음
+                    if (SpawnPointRaycast(rightSpawnPoint))//스폰포인트에 적이 있으면 스폰하지 않음
                     {
                         Debug.Log("rightSpawnPoint is blocked!");
-                    } 
-                    else{
+                    }
+                    else
+                    {
                         //test
                         GameObject right = GameManager.Instance.pool.Get(rightPattern);
                         right.transform.position = rightSpawnPoint.position;
@@ -156,28 +156,10 @@ public class WaveManager : MonoBehaviour
                         Debug.Log("Right Pattern : " + rightPattern);
                     }
                 }
+                isLeft = true;
             }
         }
     }
-
-    int wavesPattern()
-    {
-        int value = 0;
-
-        if(isLeft){
-            isLeft = false;
-            value = leftWave.getCurrentPattern();
-            leftWave.increasePatternIndex();
-            return value;
-        }
-        else{
-            isLeft = true;
-            value = rightWave.getCurrentPattern();
-            rightWave.increasePatternIndex();
-            return value;
-        }
-    }
-
 
     bool SpawnPointRaycast(Transform trans){
         int rayLength = 6;

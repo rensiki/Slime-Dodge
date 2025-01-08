@@ -49,6 +49,7 @@ public class PoolManager : MonoBehaviour
 
     public void PoolsMoving()
     {
+        int enemyNum = 0;
         for(int i = 0; i < pools.Length; i++)
         {
             foreach(GameObject item in pools[i])
@@ -58,8 +59,14 @@ public class PoolManager : MonoBehaviour
                     //Debug.Log("pool moving");
                     Enemy enemy = item.GetComponent<Enemy>();
                     enemy.StartCoroutine(enemy.MovingFunc());
+                    enemyNum++;
                 }
             }
+        }
+        if(enemyNum == 0)
+        {
+            GameManager.Instance.wave.nowStage = false;
+            Debug.Log("Stage Cleared by PoolManager");
         }
     }
 }
