@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
         wave.SpwanEnemy();
         pool.PoolsMoving();
         StartCoroutine(TurnChecker());
+        Handheld.Vibrate();
     }
 
     IEnumerator TurnChecker()//플레이어와 적의 행동을 유발시키는 이벤트 관리

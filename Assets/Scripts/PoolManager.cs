@@ -39,7 +39,8 @@ public class PoolManager : MonoBehaviour
             select = Instantiate(prefabs[index], transform);
             pools[index].Add(select);
         }
-        return select;
+        Instantiate(select, new Vector3(0, 3, 0), Quaternion.identity);//디버깅용
+        return select;//알맞은 gameObject 반환해줌
     }
 
     public void Release(GameObject obj)//이건 왜필요하지? 알아서 도착하면 비활성화 되지않나?=>아 플레이어에 의한 사망 처리!
@@ -65,8 +66,12 @@ public class PoolManager : MonoBehaviour
         }
         if(enemyNum == 0)
         {
-            GameManager.Instance.wave.nowStage = false;
-            Debug.Log("Stage Cleared by PoolManager");
+            if(GameManager.Instance.wave.leftWave.getCurrentPattern() == -1 
+            && GameManager.Instance.wave.rightWave.getCurrentPattern() == -1)//모든 웨이브가 소환되었을 때
+            {
+                GameManager.Instance.wave.nowStage = false;
+                Debug.Log("Stage Cleared by PoolManager");
+            }
         }
     }
 }

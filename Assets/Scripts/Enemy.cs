@@ -68,8 +68,8 @@ public class Enemy : MonoBehaviour
         float origin = transform.position.x;//호출시점 x위치
         float Yorigin = transform.position.y;//호출시점 y위치
         float x = 0; float y = 0;//이동하는 과정에서의 변하는 x,y값
-    
 
+        /*
         if (origin >= endx && xMoveValue > 0)
         {
             //Debug.Log("도착상태라 사라짐");
@@ -79,7 +79,8 @@ public class Enemy : MonoBehaviour
         {
             //Debug.Log("도착상태라 사라짐");
             EnemyActiveFalse();
-        }
+        }*/
+
 
         while ((xMoveValue>0&&x < xMoveValue) || (xMoveValue < 0 && x > xMoveValue))
         {
@@ -95,7 +96,7 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
     }
 
-    void EnemyActiveFalse()
+    void EnemyActiveFalse()//음.. 아직 필요성을 모르겠는데. 안정성이 좋아지긴 할라나?
     {
         gameObject.SetActive(false);
     }
