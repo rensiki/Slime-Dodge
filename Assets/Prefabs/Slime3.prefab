@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2990810576320497332, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
       propertyPath: speed
-      value: 0.03
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2990810576320497332, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
       propertyPath: xMoveValue
@@ -110,5 +110,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 1}
   m_EdgeRadius: 0

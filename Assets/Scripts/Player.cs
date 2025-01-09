@@ -122,6 +122,7 @@ public class Player : MonoBehaviour
 
     IEnumerator Moving(int Pdir)
     {
+        float movingTime = 0.5f; 
         if(xPos>-8&&xPos<8){
             xPos += Pdir;
             //Debug.Log(xPos);
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour
             xPos = 0;
         }
         callingMove = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(movingTime);
         callingMove = false;
 
 
@@ -145,7 +146,6 @@ public class Player : MonoBehaviour
         if(callingMove){
             trans.position = Vector2.Lerp(trans.position, new Vector2(xPos, 0), 0.3f);
         }
-
     }
 
 

@@ -10,9 +10,17 @@ public class Enemy : MonoBehaviour
     public int xMoveValue = 1;//x축으로 이동하는 거리
     public float speed = 0.1f;//이동하는 속도
     public float a = 5f;//2차함수의 a값. 즉 곡선의 높이
-    public float movingDelayTime = 0.01f;
+    //public float movingDelayTime = 0.01f;//fixed update구조로 변경하면서 필요없어짐
+    public float movingTime = 0.5f;//이동하는 시간
 
     int endx = 8; //이동이 끝나는 x값. 맵 크기 자체는 -8.5부터 8.5까지임
+
+    //이동하는 과정에서의 변수
+    float origin;
+    float Yorigin;
+    float x; float y;//이동하는 과정에서의 변하는 x,y값
+
+    bool isMmoving = false;
 
     void Awake()
     {
@@ -62,37 +70,54 @@ public class Enemy : MonoBehaviour
     }
 
 
-
-    public IEnumerator MovingFunc()  
-    {
-        float origin = transform.position.x;//호출시점 x위치
-        float Yorigin = transform.position.y;//호출시점 y위치
-        float x = 0; float y = 0;//이동하는 과정에서의 변하는 x,y값
-
-        /*
-        if (origin >= endx && xMoveValue > 0)
+    /*
+        public IEnumerator MovingFunc()  
         {
-            //Debug.Log("도착상태라 사라짐");
-            EnemyActiveFalse();
-        }
-        else if(origin <= -endx && xMoveValue < 0)
-        {
-            //Debug.Log("도착상태라 사라짐");
-            EnemyActiveFalse();
+            float origin = transform.position.x;//호출시점 x위치
+            float Yorigin = transform.position.y;//호출시점 y위치
+            float x = 0; float y = 0;//이동하는 과정에서의 변하는 x,y값
+
+
+            while ((xMoveValue>0&&x<xMoveValue) || (xMoveValue< 0 && x> xMoveValue))
+            {
+                x += speed* xMoveValue;//2차함수에서의 점의 x축 방향 이동
+        y = -a* (x - 0) * (x - (xMoveValue)); 
+                //Debug.Log("x : " + (origin + x) + " y : " + (Yorigin + y));
+
+                // 오브젝트 위치 갱신
+                transform.position = new Vector3(origin + x, Yorigin + y, transform.position.z);
+        yield return new WaitForSeconds(movingDelayTime);
+    }
+    //약간의 오차를 의도했던 값으로 이동시킴으로써 조정
+    transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
         }*/
 
-
-        while ((xMoveValue>0&&x < xMoveValue) || (xMoveValue < 0 && x > xMoveValue))
+    void FixedUpdate()
+    {
+        if (isMmoving)
         {
-            x += speed * xMoveValue;//2차함수에서의 점의 x축 방향 이동
-            y = -a * (x - 0) * (x - (xMoveValue)); 
-            //Debug.Log("x : " + (origin + x) + " y : " + (Yorigin + y));
-
-            // 오브젝트 위치 갱신
-            transform.position = new Vector3(origin + x, Yorigin + y, transform.position.z);
-            yield return new WaitForSeconds(movingDelayTime);
+            MovingFunc();
         }
-        //약간의 오차를 의도했던 값으로 이동시킴으로써 조정
+    }
+
+    void MovingFunc(){
+        x += speed * xMoveValue;//2차함수에서의 점의 x축 방향 이동//FixedUpdate로 변경하면서 speed가 빠를 수 밖에 없게 되어, 간격이 너무 커짐
+        y = -a * x * (x - (xMoveValue));
+        //Debug.Log("x : " + (origin + x) + " y : " + (Yorigin + y));
+
+        // 오브젝트 위치 갱신
+        //if((xMoveValue > 0 && x <= xMoveValue) || (xMoveValue < 0 && x >= xMoveValue))
+        if(y>=-0.2)//test
+            transform.position = new Vector3(origin + x, Yorigin + y, transform.position.z);
+    }
+
+    public IEnumerator MovingFuncStart(){
+        origin = transform.position.x;//호출시점 x위치
+        Yorigin = transform.position.y;//호출시점 y위치
+        x = 0; y = 0;//이동하는 과정에서의 변하는 x,y값
+        isMmoving = true;
+        yield return new WaitForSeconds(movingTime);
+        isMmoving = false;
         transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
     }
 

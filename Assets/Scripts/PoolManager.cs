@@ -59,7 +59,7 @@ public class PoolManager : MonoBehaviour
                 {
                     //Debug.Log("pool moving");
                     Enemy enemy = item.GetComponent<Enemy>();
-                    enemy.StartCoroutine(enemy.MovingFunc());
+                    enemy.StartCoroutine(enemy.MovingFuncStart());
                     enemyNum++;
                 }
             }

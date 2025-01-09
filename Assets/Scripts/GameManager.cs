@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         wave.SpwanEnemy();
         pool.PoolsMoving();
         StartCoroutine(TurnChecker());
-        Handheld.Vibrate();
+        Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
     }
 
     IEnumerator TurnChecker()//플레이어와 적의 행동을 유발시키는 이벤트 관리
