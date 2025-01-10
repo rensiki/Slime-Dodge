@@ -27,8 +27,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    public TextMeshProUGUI UITurn;
+    public WaveManager wave;
+    public PoolManager pool;
+    public GameObject player;
+    public float movingDelayTime = 1f;
+
+
+
+    Transform playerTrans;
+    int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
+    bool isMoving = false;
+
+
     private void Awake()
     {
+        playerTrans = player.GetComponent<Transform>();
+
+
+
+        //------------------------싱글톤 패턴------------------------
         if (_instance == null)
         {
             _instance = this;
@@ -44,19 +63,6 @@ public class GameManager : MonoBehaviour
 
 
 
-    public TextMeshProUGUI UITurn;
-    public WaveManager wave;
-    public PoolManager pool;
-
-
-    int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
-    float playerTurnTime = 0.5f;
-    float enemyTurnTime = 0.5f;
-    bool isPlayerTurn = false;
-    bool isEnemyTurn = false;
-
-
-    
     void Update()
     {
         UITurn.text = "Turn : " + turn;
@@ -71,22 +77,40 @@ public class GameManager : MonoBehaviour
     }
     public void addTurn()
     {
-        turn++;
-        //wave.SpwanPointChange();
-        wave.SpwanEnemy();
-        pool.PoolsMoving();
-        StartCoroutine(TurnChecker());
-        Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
+        if(!isMoving)
+        {
+            turn++;
+            isMoving = true;
+            //wave.SpwanPointChange();
+            wave.SpwanEnemy();
+            pool.PoolsMoving();
+            //Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
+            StartCoroutine(MovingDelay());
+        }
     }
 
-    IEnumerator TurnChecker()//플레이어와 적의 행동을 유발시키는 이벤트 관리
+    IEnumerator MovingDelay()
     {
-        isPlayerTurn = true;
-        yield return new WaitForSeconds(playerTurnTime);
-        isPlayerTurn = false;
-        isEnemyTurn = true;
-        yield return new WaitForSeconds(enemyTurnTime);
-        isEnemyTurn = false;
+        if (isMoving)
+        {
+            Debug.Log("now moving");
+            yield return new WaitForSeconds(movingDelayTime);
+            PlayerHitCheck();
+            isMoving = false;
+            Debug.Log("end moving");
+        }
+    }
+
+    void PlayerHitCheck()
+    {
+        Debug.Log("PlayerHitCheck");
+        Vector3 rayPos = new Vector3(playerTrans.position.x, playerTrans.position.y, playerTrans.position.z+1);
+        RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
+        Debug.DrawRay(rayPos, new Vector3(0, 0, -1)*3, Color.blue, 0.5f);
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            Debug.Log("player attacked!");
+        }
     }
 
 }

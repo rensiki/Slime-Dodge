@@ -13,8 +13,6 @@ public class Enemy : MonoBehaviour
     //public float movingDelayTime = 0.01f;//fixed update구조로 변경하면서 필요없어짐
     public float movingTime = 0.5f;//이동하는 시간
 
-    int endx = 8; //이동이 끝나는 x값. 맵 크기 자체는 -8.5부터 8.5까지임
-
     //이동하는 과정에서의 변수
     float origin;
     float Yorigin;
@@ -65,8 +63,7 @@ public class Enemy : MonoBehaviour
         {
             return a * 0.2f;
         }
-        return 0;//에러케이스
-        Debug.Log("xMove 범위 에러");
+        else{ Debug.Log("xMove 범위 에러"); return 0; }
     }
 
 

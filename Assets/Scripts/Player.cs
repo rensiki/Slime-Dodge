@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         LerpMoving();
-
     }
 
 
@@ -134,13 +133,7 @@ public class Player : MonoBehaviour
         callingMove = true;
         yield return new WaitForSeconds(movingTime);
         callingMove = false;
-
-
-        /*
-        trans.position = Vector2.Lerp(trans.position
-        , new Vector2(trans.position.x + Pdir, trans.position.y), Time.deltaTime * 10);
-        yield return null;*/
-    } 
+    }
 
     void LerpMoving(){
         if(callingMove){

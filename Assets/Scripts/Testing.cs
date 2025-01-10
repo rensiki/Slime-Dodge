@@ -46,7 +46,7 @@ public class Testing : MonoBehaviour
             return a * 0.2f;
         }
         return 0;//에러케이스
-        Debug.Log("xMove 범위 에러");
+        //Debug.Log("xMove 범위 에러");
     }
 
 

@@ -10,7 +10,7 @@ public class EnemyRemover : MonoBehaviour
     {
         if(other.tag == "Enemy")
         {
-            Debug.Log("Enemy Detected by EnemyRemover");
+            //Debug.Log("Enemy Detected by EnemyRemover");
             if(isLeft){
                 if(other.GetComponent<Enemy>().xMoveValue < 0)
                 {
