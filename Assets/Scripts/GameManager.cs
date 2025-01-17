@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
         Vector3 rayPos = new Vector3(playerTrans.position.x, playerTrans.position.y, playerTrans.position.z+1);
         RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
         Debug.DrawRay(rayPos, new Vector3(0, 0, -1)*3, Color.blue, 0.5f);
-        if (hit.collider.CompareTag("Enemy"))
+        if (hit.collider.gameObject.tag == "Enemy")
         {
             Debug.Log("player attacked!");
         }
