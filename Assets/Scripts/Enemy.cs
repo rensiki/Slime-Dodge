@@ -12,6 +12,10 @@ public class Enemy : MonoBehaviour
     public float a = 5f;//2차함수의 a값. 즉 곡선의 높이
     //public float movingDelayTime = 0.01f;//fixed update구조로 변경하면서 필요없어짐
     public float movingTime = 0.5f;//이동하는 시간
+    public int jellyStone = 0;//젤리석이 떨어지는 횟수
+    public int mapWidth = 8;//맵의 너비
+
+
 
     //이동하는 과정에서의 변수
     float origin;
@@ -118,8 +122,11 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
     }
 
-    void EnemyActiveFalse()//음.. 아직 필요성을 모르겠는데. 안정성이 좋아지긴 할라나?
+    public void EnemyActiveFalse()//음.. 아직 필요성을 모르겠는데. 안정성이 좋아지긴 할라나?
     {
+        if(transform.position.x>-mapWidth||transform.position.x<mapWidth){//절댓값으로 바꾸기
+            Debug.Log("jellyStone 드랍: " + jellyStone);
+        }
         gameObject.SetActive(false);
     }
     

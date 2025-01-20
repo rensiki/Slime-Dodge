@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: speed
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 2990810576320497332, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
+      propertyPath: jellyStone
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2990810576320497337, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
       propertyPath: m_Name
       value: Slime1

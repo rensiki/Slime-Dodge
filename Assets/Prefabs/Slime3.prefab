@@ -12,6 +12,10 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2990810576320497332, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
+      propertyPath: jellyStone
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990810576320497332, guid: 2399e38f27cae244c8d602604a8f1af1, type: 3}
       propertyPath: xMoveValue
       value: 3
       objectReference: {fileID: 0}

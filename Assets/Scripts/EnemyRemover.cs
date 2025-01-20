@@ -15,14 +15,14 @@ public class EnemyRemover : MonoBehaviour
                 if(other.GetComponent<Enemy>().xMoveValue < 0)
                 {
                     Debug.Log("Enemy Destroyed by EnemyRemover");
-                    other.gameObject.SetActive(false);
+                    other.GetComponent<Enemy>().EnemyActiveFalse();
                 }
             }
             else{
                 if(other.GetComponent<Enemy>().xMoveValue > 0)
                 {
                     Debug.Log("Enemy Destroyed by EnemyRemover"); 
-                    other.gameObject.SetActive(false);
+                    other.GetComponent<Enemy>().EnemyActiveFalse();
                 }
             }
         }
