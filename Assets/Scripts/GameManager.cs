@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     public WaveManager wave;
     public PoolManager pool;
     public GameObject player;
-    public float movingDelayTime = 1f;
+    public float movingDelayTime = 1f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
 
 
 
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
-    bool isMoving = false;
+    public bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함
 
 
     private void Awake()
@@ -81,11 +81,11 @@ public class GameManager : MonoBehaviour
         {
             turn++;
             isMoving = true;
+            StartCoroutine(MovingDelay());//플레이어 코드 속에 있던 함수에서 이쪽으로 이동시킴. 오류 없도록 주의
             //wave.SpwanPointChange();
             wave.SpwanEnemy();
             pool.PoolsMoving();
             //Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
-            StartCoroutine(MovingDelay());
         }
     }
 
@@ -111,6 +111,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("player attacked!");
         }
+    }
+
+    void PlayerNormalAttack()
+    //
+    {
+        
     }
 
 }

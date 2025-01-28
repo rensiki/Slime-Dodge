@@ -5,13 +5,21 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    /// <summary>
+    /// 이 게임의 핵심인 플레이어의 이동만을 담당하는 코드. 플레이어 오브젝트에 붙어있음.
+    /// 나머지 일반공격이나 스킬과 같은 터치 조작들은 GameManager에서 처리함.
+    /// 즉, 자이로스코프 기능은 이곳에서만 사용할 것이고, 나머지 터치 조작은 GameManager에서 처리할 것임.(플레이어 캐릭터와 터치 조작의 독립성 보장)
+    /// </summary>
+
+
+
     // Start is called before the first frame update
     Rigidbody2D rb;
     Transform trans;
 
 
 
-    bool isMoving = false;
+    //bool isMoving = false;//GameManager에서 총 관리함. 턴 개념과 깊게 연관된 변수이기 때문
     bool isTwoTouching = false;
     bool isAttackAble = false;
     bool callingMove = false;
@@ -23,6 +31,12 @@ public class Player : MonoBehaviour
     int xPos = 0;
     float time = 0;
     float movingDelayTime = 1f;
+
+    enum MovingState
+    {
+        LEFT = -1,
+        RIGHT = 1
+    }
 
     void Awake()
     {
@@ -39,6 +53,7 @@ public class Player : MonoBehaviour
         Attack(); //1번 터치시 공격
 
         //test
+        PCmoving();//키보드로 이동하는 디버그용 함수
     }
 
 
@@ -46,6 +61,12 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         LerpMoving();
+    }
+
+    void PlayerMove(int dir)//플레이어를 이동시키는 함수들을 총 관리하는 함수. 실질적으로 주어진 int값인 dir만큼 이동시켜줌
+    {
+        //StartCoroutine(MovingDelay(movingDelayTime));//calling moving로 대체 가능     //GameManager에서 총 관리함. 턴 개념과 깊게 연관된 변수이기 때문
+        StartCoroutine(Moving(dir));//주어진dir에 따라 플레이어를 이동시킴
     }
 
 
@@ -56,27 +77,20 @@ public class Player : MonoBehaviour
             Touch touch0 = Input.GetTouch(0);
             if (Input.touchCount > 1)
             {
-
                 isTwoTouching = true;//공격이 안되는 상태
                 Touch touch1 = Input.GetTouch(1);
 
                 //if문으로 2개 터치중 할 필요 없을듯 
                 //왜냐면 2개 터치중이 아닐때는 아래의 코드가 실행되지 않기 때문
-                if (Input.gyro.rotationRateUnbiased.y > 2 && !isMoving)
+                if (Input.gyro.rotationRateUnbiased.y > 2 && !GameManager.Instance.isMoving)
                 {
-                    Debug.Log("Right Dashed");
-                    PlayerMove(1);
-                    GameManager.Instance.addTurn();
+                    MoveCallingSetting(MovingState.RIGHT);
                 }
-                else if (Input.gyro.rotationRateUnbiased.y < -2 && !isMoving)
+                else if (Input.gyro.rotationRateUnbiased.y < -2 && !GameManager.Instance.isMoving)
                 {
-                    Debug.Log("Left Dashed");
-                    PlayerMove(-1);
-                    GameManager.Instance.addTurn();
+                    MoveCallingSetting(MovingState.LEFT);
                 }
-
                 //isTwoTouching을 false로 처리해주는 로직
-
                 else if (touch1.phase == TouchPhase.Ended||touch0.phase == TouchPhase.Ended)
                 {
                     DListouch1Ended = true;
@@ -96,28 +110,64 @@ public class Player : MonoBehaviour
         }
     }
 
+    void MoveCallingSetting(MovingState state)
+    {
+        if (GameManager.Instance.isMoving)//이동 딜레이중에는 방향도 바꿀 수 없도록 이곳에다 빠져나가는 코드 추가
+        {
+            return;
+        }  
+
+
+        if (state == MovingState.LEFT)
+        {
+            Debug.Log("Left Dashed");
+            PlayerMove(-1);//왼쪽으로 한칸 이동
+            if (transform.rotation.y != 180)//회전해서 왼쪽을 보도록 설정
+            {
+                transform.rotation = new Quaternion(0, 180, 0, 0);
+            }
+            GameManager.Instance.addTurn();
+        }
+        else if(state == MovingState.RIGHT)
+        {
+            Debug.Log("Right Dashed");
+            PlayerMove(1);//오른쪽으로 한칸 이동
+            if (transform.rotation.y != 0)//회전해서 오른쪽을 보도록 설정
+            {
+                transform.rotation = new Quaternion(0, 0, 0, 0);
+            }
+            GameManager.Instance.addTurn();
+        }
+    }
+
+    void PCmoving()//키보드로 이동하는 디버그용 함수
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveCallingSetting(MovingState.LEFT);
+        }
+    
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveCallingSetting(MovingState.RIGHT);
+        }
+    }
+
     void TwoTouchDebuger()
     {
         isTwoTouching = false;
 
     }
 
-    void PlayerMove(int dir)
-    {
-        StartCoroutine(MovingDelay(movingDelayTime));//calling moving로 대체 가능
-        StartCoroutine(Moving(dir));
-
-        //주어진dir에 따라 플레이어를 이동시킴
-    }
-
-
-//다른 코루틴으로 분리해야 디버그 가능
+    /*//GameManager에서 총 관리함. 턴 개념과 깊게 연관된 변수이기 때문
+    //다른 코루틴으로 분리해야 디버그 가능
     IEnumerator MovingDelay(float time)
     {
         isMoving = true;
         yield return new WaitForSeconds(time);
         isMoving = false;
-    }
+    }*/
+
 
     IEnumerator Moving(int Pdir)
     {
