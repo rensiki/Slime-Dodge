@@ -122,11 +122,14 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector3(origin + xMoveValue, Yorigin, transform.position.z);
     }
 
-    public void EnemyActiveFalse()//음.. 아직 필요성을 모르겠는데. 안정성이 좋아지긴 할라나?
+    public void EnemyActiveFalse()
     {
-        if(transform.position.x>-mapWidth||transform.position.x<mapWidth){//절댓값으로 바꾸기
-            Debug.Log("jellyStone 드랍: " + jellyStone);
+        if(transform.position.x >= Math.Abs(mapWidth))//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
+        {
+            gameObject.SetActive(false);
+            return;
         }
+        Debug.Log("jellyStone 드랍: " + jellyStone);
         gameObject.SetActive(false);
     }
     
