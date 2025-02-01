@@ -124,12 +124,13 @@ public class Enemy : MonoBehaviour
 
     public void EnemyActiveFalse()
     {
-        if(transform.position.x >= Math.Abs(mapWidth))//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
+        if(Mathf.Abs(transform.position.x) >= mapWidth)//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
         {
             gameObject.SetActive(false);
             return;
         }
         Debug.Log("jellyStone 드랍: " + jellyStone);
+        GameManager.Instance.addJellyStone(jellyStone);
         gameObject.SetActive(false);
     }
     

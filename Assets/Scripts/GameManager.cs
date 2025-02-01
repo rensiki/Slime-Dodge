@@ -29,16 +29,15 @@ public class GameManager : MonoBehaviour
 
 
     public TextMeshProUGUI UITurn;
+    public TextMeshProUGUI UIJellyStone;
     public WaveManager wave;
     public PoolManager pool;
     public GameObject player;
+    public bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함
     public float movingDelayTime = 1f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
-
-
-
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
-    public bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함
+    public int ToalJellyStone = 0;
 
 
     private void Awake()
@@ -66,9 +65,25 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UITurn.text = "Turn : " + turn;
-        if(Input.GetKeyDown(KeyCode.A))//a키 입력
+        UIJellyStone.text = "JellyStone : " + ToalJellyStone;
+
+        if (Input.GetKeyDown(KeyCode.A))
         {
             addTurn();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            PlayerNormalAttack();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            GameSave();
+            Debug.Log("GameSaved");
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameLoad();
+            Debug.Log("GameSaved");
         }
     }
     public int getTurn()
@@ -87,6 +102,20 @@ public class GameManager : MonoBehaviour
             pool.PoolsMoving();
             //Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
         }
+    }
+    public void addJellyStone(int stoneValue)
+    {
+        ToalJellyStone += stoneValue;
+    }
+
+    public void GameSave()
+    {
+        PlayerPrefs.SetInt("JellyStone", ToalJellyStone);
+        PlayerPrefs.Save();
+    }
+    public void GameLoad()
+    {
+        ToalJellyStone = PlayerPrefs.GetInt("JellyStone");
     }
 
     IEnumerator MovingDelay()
@@ -113,10 +142,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void PlayerNormalAttack()
+    public void PlayerNormalAttack()
     //
     {
-        
+        Debug.Log("PlayerNormalAttack");
+
+        if (playerTrans.rotation.y == 0)
+        {
+            Vector3 rayPos = new Vector3(playerTrans.position.x + 1, playerTrans.position.y, playerTrans.position.z + 1);
+            RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
+            Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
+
+            if(hit == false) { return; }
+            //else if(hit.collider.gameObject.tag != "Enemy") { return; }
+            else { hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse(); }
+        }
+        else
+        {
+            Vector3 rayPos = new Vector3(playerTrans.position.x - 1, playerTrans.position.y, playerTrans.position.z + 1);
+            RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
+            Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
+            if(hit == false) { return; }
+            //else if(hit.collider.gameObject.tag != "Enemy") { return; }
+            else { hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse(); }
+        }
     }
 
 }

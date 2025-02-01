@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
 
     int xPos = 0;
     float time = 0;
-    float movingDelayTime = 1f;
 
     enum MovingState
     {
