@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI UITurn;
     public TextMeshProUGUI UIJellyStone;
+    public TextMeshProUGUI UIbubbleMana;
+    public TextMeshProUGUI UIbubbleTeaLevel;
     public WaveManager wave;
     public PoolManager pool;
     public GameObject player;
@@ -37,6 +39,9 @@ public class GameManager : MonoBehaviour
     public float movingDelayTime = 1f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
+    int bubbleTeaLevel = 1;
+    int bubbleTeaEnhancement = 1;
+    int bubbleMana = 0;
     public int ToalJellyStone = 0;
 
 
@@ -66,14 +71,18 @@ public class GameManager : MonoBehaviour
     {
         UITurn.text = "Turn : " + turn;
         UIJellyStone.text = "JellyStone : " + ToalJellyStone;
+        UIbubbleMana.text = "BubbleMana : " + bubbleMana;
+        UIbubbleTeaLevel.text = "BubbleTeaLevel : " + bubbleTeaLevel;
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            addTurn();
+            DrinkBubbleTea();
+            Debug.Log("DrinkBubbleTea");
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             PlayerNormalAttack();
+            Debug.Log("PlayerNormalAttack");
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -83,7 +92,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             GameLoad();
-            Debug.Log("GameSaved");
+            Debug.Log("GameLoaded");
         }
     }
     public int getTurn()
@@ -145,27 +154,49 @@ public class GameManager : MonoBehaviour
     public void PlayerNormalAttack()
     //
     {
-        Debug.Log("PlayerNormalAttack");
+        if(isMoving)
+        {
+            return;
+        }
 
         if (playerTrans.rotation.y == 0)
         {
             Vector3 rayPos = new Vector3(playerTrans.position.x + 1, playerTrans.position.y, playerTrans.position.z + 1);
             RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
             Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
-
-            if(hit == false) { return; }
-            //else if(hit.collider.gameObject.tag != "Enemy") { return; }
-            else { hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse(); }
+            while(hit!=false){
+                hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse();
+                hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
+            }
         }
         else
         {
             Vector3 rayPos = new Vector3(playerTrans.position.x - 1, playerTrans.position.y, playerTrans.position.z + 1);
             RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
             Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
-            if(hit == false) { return; }
-            //else if(hit.collider.gameObject.tag != "Enemy") { return; }
-            else { hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse(); }
+            while(hit!=false){
+                hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse();
+                hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
+            }
         }
+        addTurn();
+    }
+
+    public void BubbleTeaLevelUp()
+    {
+        Debug.Log("BubbleTeaLevelUp");
+        bubbleTeaLevel++;
+    }
+    void DrinkBubbleTea()
+    {
+        if(isMoving)
+        {
+            return;
+        }
+        Debug.Log("DrinkBubbleTea");
+        bubbleMana += bubbleTeaEnhancement * bubbleTeaLevel * bubbleTeaLevel;//버블티 레벨에 따른 마나 수급량이 급격히 증가함=>모아서 사용해야 효율이 더 좋음음
+        bubbleTeaLevel = 1;
+        addTurn();
     }
 
 }

@@ -81,10 +81,12 @@ public class WaveManager : MonoBehaviour
     void Update() {
         if (Input.GetKeyDown(KeyCode.Space)&&!nowStage)
         {
+            Debug.Log("Stage Started!");
             StartStage();
         }
         if (Input.GetKeyDown(KeyCode.Return)&&!nowStage)
         {
+            Debug.Log("Stage skipped!");
             stage++;//디버그용 스테이지 증가 코드
         }
     }
@@ -101,6 +103,21 @@ public class WaveManager : MonoBehaviour
         leftWave = new Wave(waveSize, stage);
         rightWave = new Wave(waveSize, stage);
         nowStage = true;
+    }
+
+    public void SpwanEndFunc()
+    {
+        if(nowStage)
+        {
+            if(leftWave.getCurrentPattern() == -1 && rightWave.getCurrentPattern() == -1)
+            {
+                if(GameManager.Instance.pool.nowEnemyNum == 0)
+                {
+                    nowStage = false;
+                    Debug.Log("Stage Ended!");
+                }
+            }
+        }
     }
 
     public void SpwanPointChange(){
@@ -143,6 +160,7 @@ public class WaveManager : MonoBehaviour
                         if(left.GetComponent<Enemy>().xMoveValue < 0){
                             left.GetComponent<Enemy>().reverse_xMoveValue();//오른쪽으로 이동하도록 변경해야 하기 때문에 양수로 바꿔줌
                         }
+                        GameManager.Instance.pool.nowEnemyNum++;//적이 소환되었으므로 증가시켜줌
                         leftWave.increasePatternIndex();//다음 패턴으로 넘겨주면서, 사용한 패턴은 삭제처리
                         Debug.Log("Left Pattern : " + leftPattern);
                     }
@@ -166,17 +184,20 @@ public class WaveManager : MonoBehaviour
                         if(right.GetComponent<Enemy>().xMoveValue > 0){
                             right.GetComponent<Enemy>().reverse_xMoveValue();//왼쪽으로 이동하도록 변경해야 하기 때문에 음수로 바꿔줌
                         }
+                        GameManager.Instance.pool.nowEnemyNum++;//적이 소환되었으므로 증가시켜줌
                         rightWave.increasePatternIndex();//다음 패턴으로 넘겨주면서, 사용한 패턴은 삭제처리
                         Debug.Log("Right Pattern : " + rightPattern);
                     }
                 }
                 isLeft = true;
             }
+            SpwanEndFunc();
         }
+        /*
         else{
-            //Debug.Log("Stage Started by SpwanEnemy()");
-            //StartStage();
-        }
+            Debug.Log("Stage Started by SpwanEnemy()");
+            StartStage();
+        }*/
     }
 
     bool SpawnPointRaycast(Transform trans){

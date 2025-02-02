@@ -9,8 +9,7 @@ public class PoolManager : MonoBehaviour
 
     // .. 풀 담당을 하는 리스트들
     List<GameObject>[] pools;// GameObject 리스트 배열. 배열속 리스트들의 개수는 prfabs의 원소의 개수와 동일
-
-
+    public int nowEnemyNum = 0;//WaveManager에서 enemy를 소환할 때마다 증가시켜주고, enemy가 사망할 때마다 감소시켜줌.
     void Awake() 
     {
         pools = new List<GameObject>[prefabs.Length];//각 몬스터 프리펩마다 전용 pool이 존재.
@@ -50,7 +49,7 @@ public class PoolManager : MonoBehaviour
 
     public void PoolsMoving()
     {
-        int enemyNum = 0;
+        //int enemyNum = 0;
         for(int i = 0; i < pools.Length; i++)
         {
             foreach(GameObject item in pools[i])
@@ -60,10 +59,11 @@ public class PoolManager : MonoBehaviour
                     //Debug.Log("pool moving");
                     Enemy enemy = item.GetComponent<Enemy>();
                     enemy.StartCoroutine(enemy.MovingFuncStart());
-                    enemyNum++;
+                    //enemyNum++;
                 }
             }
         }
+        /*SATGE관리는 WaveManager에서 처리하자자
         if(enemyNum == 0)
         {
             if(GameManager.Instance.wave.leftWave.getCurrentPattern() == -1 
@@ -72,6 +72,6 @@ public class PoolManager : MonoBehaviour
                 GameManager.Instance.wave.nowStage = false;
                 Debug.Log("Stage Cleared by PoolManager");
             }
-        }
+        }*/
     }
 }

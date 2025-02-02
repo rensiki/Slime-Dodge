@@ -124,6 +124,7 @@ public class Enemy : MonoBehaviour
 
     public void EnemyActiveFalse()
     {
+        GameManager.Instance.pool.nowEnemyNum--;//적이 사망되었으므로 스폰된 적의 수를 감소시켜줌
         if(Mathf.Abs(transform.position.x) >= mapWidth)//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
         {
             gameObject.SetActive(false);
@@ -131,6 +132,7 @@ public class Enemy : MonoBehaviour
         }
         Debug.Log("jellyStone 드랍: " + jellyStone);
         GameManager.Instance.addJellyStone(jellyStone);
+        GameManager.Instance.BubbleTeaLevelUp();
         gameObject.SetActive(false);
     }
     
