@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         UIbubbleMana.text = "BubbleMana : " + bubbleMana;
         UIbubbleTeaLevel.text = "BubbleTeaLevel : " + bubbleTeaLevel;
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             DrinkBubbleTea();
             Debug.Log("DrinkBubbleTea");
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
 
     void PlayerHitCheck()
     {
-        Debug.Log("PlayerHitCheck");
+        //Debug.Log("PlayerHitCheck");
         Vector3 rayPos = new Vector3(playerTrans.position.x, playerTrans.position.y, playerTrans.position.z+1);
         RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
         Debug.DrawRay(rayPos, new Vector3(0, 0, -1)*3, Color.blue, 0.5f);

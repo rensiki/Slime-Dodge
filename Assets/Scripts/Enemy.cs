@@ -125,8 +125,10 @@ public class Enemy : MonoBehaviour
     public void EnemyActiveFalse()
     {
         GameManager.Instance.pool.nowEnemyNum--;//적이 사망되었으므로 스폰된 적의 수를 감소시켜줌
-        if(Mathf.Abs(transform.position.x) >= mapWidth)//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
-        {
+        GameManager.Instance.wave.SpwanEndFunc();
+        if (Mathf.Abs(transform.position.x) >= mapWidth)//맵의 너비를 넘어가면 젤리석을 떨어뜨리지 않음
+        {//이 부분이 자잘한 버그가 많이 생길듯.. 스킬 발동이 조금만 늦어도 그냥 remover에 의해서 사라짐
+        //이벤트 매니저로 해결 가능할려나?
             gameObject.SetActive(false);
             return;
         }

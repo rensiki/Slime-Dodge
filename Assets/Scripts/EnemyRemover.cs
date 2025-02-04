@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class EnemyRemover : MonoBehaviour
 {
-    public bool isLeft;
+    public bool isLeftRemover = true;
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Enemy")
         {
             //Debug.Log("Enemy Detected by EnemyRemover");
-            if(isLeft){
+            if(isLeftRemover)
+            {
                 if(other.GetComponent<Enemy>().xMoveValue < 0)
                 {
                     Debug.Log("Enemy Destroyed by EnemyRemover");

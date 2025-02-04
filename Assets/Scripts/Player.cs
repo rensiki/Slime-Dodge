@@ -141,12 +141,12 @@ public class Player : MonoBehaviour
 
     void PCmoving()//키보드로 이동하는 디버그용 함수
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             MoveCallingSetting(MovingState.LEFT);
         }
     
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             MoveCallingSetting(MovingState.RIGHT);
         }
@@ -155,7 +155,6 @@ public class Player : MonoBehaviour
     void TwoTouchDebuger()
     {
         isTwoTouching = false;
-
     }
 
     /*//GameManager에서 총 관리함. 턴 개념과 깊게 연관된 변수이기 때문

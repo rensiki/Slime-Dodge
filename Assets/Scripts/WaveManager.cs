@@ -105,13 +105,14 @@ public class WaveManager : MonoBehaviour
         nowStage = true;
     }
 
-    public void SpwanEndFunc()
+    public void SpwanEndFunc()//enemy가 죽었을 때, wave가 모두 완료되어있으면 스테이지 종료 
     {
-        if(nowStage)
+        Debug.Log("SpwanEndFunc");
+        if (nowStage)
         {
-            if(leftWave.getCurrentPattern() == -1 && rightWave.getCurrentPattern() == -1)
+            if (leftWave.getCurrentPattern() == -1 && rightWave.getCurrentPattern() == -1)
             {
-                if(GameManager.Instance.pool.nowEnemyNum == 0)
+                if (GameManager.Instance.pool.nowEnemyNum == 0)
                 {
                     nowStage = false;
                     Debug.Log("Stage Ended!");
@@ -191,7 +192,7 @@ public class WaveManager : MonoBehaviour
                 }
                 isLeft = true;
             }
-            SpwanEndFunc();
+            //SpwanEndFunc();
         }
         /*
         else{
