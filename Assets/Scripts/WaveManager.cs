@@ -11,32 +11,47 @@ public class WaveManager : MonoBehaviour
         int patternIndex = 0;
         List<int> enemyPattern = new List<int>();
 
-        public Wave(){}
+        public Wave() { }
 
         public Wave(int waveSize, int patternSize)
         {
             this.waveSize = waveSize;
             this.patternSize = patternSize;
-            Debug.Log("wave's patternSize: "+this.patternSize);
+            Debug.Log("wave's patternSize: " + this.patternSize);
             makePattern();
         }
 
         void makePattern()
         {
-            for(int i = 0; i < waveSize; i++)
+            for (int i = 0; i < waveSize; i++)
             {
                 //Debug.Log(Random.Range(0, patternSize));
                 enemyPattern.Add(Random.Range(0, patternSize));//0부터 patternSize-1까지의 랜덤한 숫자를 생성
             }
             Debug.Log("Pattern created!");
-            for(int i = 0; i < waveSize; i++)
+            for (int i = 0; i < waveSize; i++)
             {
                 Debug.Log(enemyPattern[i]);
             }
         }
 
+        public void PatternRatio(int patternNum, float ratio)
+        {
+            int leastNum = int(patternSize * ratio);
+            //패턴의 일정 비율을 보장해주는 함수. 단, 중복 사용시 변수가 존재
+            while(leastNum > 0)
+            {
+                int randomIndex = Random.Range(0, waveSize-1);
+                if(enemyPattern[randomIndex] != patternNum)
+                {
+                    enemyPattern[randomIndex] = patternNum;
+                    leastNum--;
+                }
+            }
+        }
+
         public int getCurrentPattern()
-        {  
+        {
             if (patternIndex >= waveSize)
             {
                 Debug.Log("Wave completed!");
@@ -70,7 +85,7 @@ public class WaveManager : MonoBehaviour
     bool isLeft = true;//왼쪽에서 소환할지 오른쪽에서 소환할지 결정하는 변수
     int pauseCount = 2;//몇번째 턴부터 멈출지 결정하는 변수
     int turnCounter = 0;//pause후에 몇턴이 지났는지 기록하는 변수
-    
+    int section = 1;//스테이지의 섹션을 나누는 변수
 
     void Start()
     {
@@ -79,31 +94,51 @@ public class WaveManager : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)&&!nowStage)
+        if (Input.GetKeyDown(KeyCode.Space) && !nowStage)
         {
             Debug.Log("Stage Started!");
             StartStage();
         }
-        if (Input.GetKeyDown(KeyCode.Return)&&!nowStage)
+        if (Input.GetKeyDown(KeyCode.Return) && !nowStage)
         {
             Debug.Log("Stage skipped!");
             stage++;//디버그용 스테이지 증가 코드
         }
     }
 
-    public void StartStage()
+    void SectionFunction(Wave LeftWave, Wave RightWave)
     {
-        if(nowStage)
+        switch (section)
         {
-            Debug.Log("Already started!");
-            return;
+            case 1:
+                if (stage == 1){LeftWave.PatternRatio(0, 0.5f);}
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
         }
-        stage++;
-        waveSize = stage*5;
-        leftWave = new Wave(waveSize, stage);
-        rightWave = new Wave(waveSize, stage);
-        nowStage = true;
     }
+    void SectionToStage(int WaveSize, )
+    {
+        
+    }
+
+    public void StartStage()
+{
+    if (nowStage)
+    {
+        Debug.Log("Already started!");
+        return;
+    }
+    stage++;
+    waveSize = stage * 5;
+    leftWave = new Wave(waveSize, stage);
+    rightWave = new Wave(waveSize, stage);
+    nowStage = true;
+}
 
     public void SpwanEndFunc()//enemy가 죽었을 때, wave가 모두 완료되어있으면 스테이지 종료 
     {

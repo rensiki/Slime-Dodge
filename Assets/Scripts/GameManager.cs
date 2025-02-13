@@ -40,9 +40,11 @@ public class GameManager : MonoBehaviour
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
     int bubbleTeaLevel = 1;
-    int bubbleTeaEnhancement = 1;
+    int bubbleTeaEnhancement = 0;
     int bubbleMana = 0;
+    int PlayerTwoBlockAttackMana = 10;
     public int ToalJellyStone = 0;
+
 
 
     private void Awake()
@@ -83,6 +85,13 @@ public class GameManager : MonoBehaviour
         {
             PlayerNormalAttack();
             Debug.Log("PlayerNormalAttack");
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (bubbleMana < PlayerTwoBlockAttackMana){return;}
+            bubbleMana -= PlayerTwoBlockAttackMana;
+            PlayerTwoBlockAttack();
+            Debug.Log("PlayerTwoBlockAttack");
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -150,11 +159,23 @@ public class GameManager : MonoBehaviour
             Debug.Log("player attacked!");
         }
     }
+    
+    void EnemyAttackingFunc(Vector3 RayPos)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(RayPos, new Vector3(0, 0, -1), 3);
+        Debug.DrawRay(RayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
+        while (hit != false)
+        {//enemy 외의 대상과 접촉하면 오류뜨는 구조. 레이어로 디버그 가능?
+            hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse();
+            hit = Physics2D.Raycast(RayPos, new Vector3(0, 0, -1), 3);
+            Debug.DrawRay(RayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
+        }
+    }
 
     public void PlayerNormalAttack()
     //
     {
-        if(isMoving)
+        if (isMoving)
         {
             return;
         }
@@ -162,22 +183,36 @@ public class GameManager : MonoBehaviour
         if (playerTrans.rotation.y == 0)
         {
             Vector3 rayPos = new Vector3(playerTrans.position.x + 1, playerTrans.position.y, playerTrans.position.z + 1);
-            RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
-            Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
-            while(hit!=false){
-                hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse();
-                hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
-            }
+            EnemyAttackingFunc(rayPos);
         }
         else
         {
             Vector3 rayPos = new Vector3(playerTrans.position.x - 1, playerTrans.position.y, playerTrans.position.z + 1);
-            RaycastHit2D hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
-            Debug.DrawRay(rayPos, new Vector3(0, 0, -1) * 3, Color.yellow, 0.5f);
-            while(hit!=false){
-                hit.collider.gameObject.GetComponent<Enemy>().EnemyActiveFalse();
-                hit = Physics2D.Raycast(rayPos, new Vector3(0, 0, -1), 3);
-            }
+            EnemyAttackingFunc(rayPos);
+        }
+        addTurn();
+    }
+
+    void PlayerTwoBlockAttack()
+    {
+        if (isMoving)
+        {
+            return;
+        }
+
+        if (playerTrans.rotation.y == 0)
+        {
+            Vector3 rayPos = new Vector3(playerTrans.position.x + 1, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
+            rayPos = new Vector3(playerTrans.position.x + 2, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
+        }
+        else
+        {
+            Vector3 rayPos = new Vector3(playerTrans.position.x - 1, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
+            rayPos = new Vector3(playerTrans.position.x - 2, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
         }
         addTurn();
     }
@@ -194,7 +229,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Debug.Log("DrinkBubbleTea");
-        bubbleMana += bubbleTeaEnhancement * bubbleTeaLevel * bubbleTeaLevel;//버블티 레벨에 따른 마나 수급량이 급격히 증가함=>모아서 사용해야 효율이 더 좋음음
+        bubbleMana += bubbleTeaEnhancement + bubbleTeaLevel * bubbleTeaLevel;//버블티 레벨에 따른 마나 수급량이 급격히 증가함=>모아서 사용해야 효율이 더 좋음음
         bubbleTeaLevel = 1;
         addTurn();
     }
