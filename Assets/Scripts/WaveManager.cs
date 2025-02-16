@@ -37,7 +37,7 @@ public class WaveManager : MonoBehaviour
 
         public void PatternRatio(int patternNum, float ratio)
         {
-            int leastNum = int(patternSize * ratio);
+            int leastNum = (int)(patternSize * ratio);
             //패턴의 일정 비율을 보장해주는 함수. 단, 중복 사용시 변수가 존재
             while(leastNum > 0)
             {
@@ -120,10 +120,6 @@ public class WaveManager : MonoBehaviour
             default:
                 break;
         }
-    }
-    void SectionToStage(int WaveSize, )
-    {
-        
     }
 
     public void StartStage()
