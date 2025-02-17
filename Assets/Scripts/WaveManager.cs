@@ -73,7 +73,7 @@ public class WaveManager : MonoBehaviour
 
     // 메인 코드 시작
 
-    int stage = 0;
+    int stage = 1;
     int waveSize = 10;
     public bool nowStage = false;//pool에서 적을 소환할지 말지 결정하는 변수.. 스테이지가 진행중인지 아닌지는 명확히 모름... 수정 필요=>false로 바꿔주는 코드를 제거하고 poolmanager에서 접근할 수 있도록 변경해야함
     public Wave leftWave;
@@ -106,16 +106,30 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    void SectionFunction(Wave LeftWave, Wave RightWave)
+    void SectionFunction()
     {
         switch (section)
         {
             case 1:
-                if (stage == 1){LeftWave.PatternRatio(0, 0.5f);}
+                waveSize = 1;
                 break;
             case 2:
+                waveSize = 2;
+                if(stage == 1){LeftWave.PatternRatio(0, 0.8f);
+                RightWave.PatternRatio(0, 0.8f);}
+                if (stage == 2){LeftWave.PatternRatio(0, 0.6f);
+                RightWave.PatternRatio(0, 0.6f);}
                 break;
             case 3:
+                pauseCount = 1;
+                waveSize = 3;
+                if(stage == 1){LeftWave.PatternRatio(0, 0.5f); 
+                RightWave.PatternRatio(0, 0.5f);}
+                if()
+                break;
+            case 4:
+                break;
+            case 5:
                 break;
             default:
                 break;
@@ -129,11 +143,19 @@ public class WaveManager : MonoBehaviour
         Debug.Log("Already started!");
         return;
     }
-    stage++;
+    if(stage >= 2)
+    {
+        section++;
+        Debug.Log("Section : " + section +" Started!");
+        nowStage = false;
+        return;
+    }
+    SectionFunction();
     waveSize = stage * 5;
     leftWave = new Wave(waveSize, stage);
     rightWave = new Wave(waveSize, stage);
     nowStage = true;
+    stage++;
 }
 
     public void SpwanEndFunc()//enemy가 죽었을 때, wave가 모두 완료되어있으면 스테이지 종료 
