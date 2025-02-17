@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public GameObject player;
     public bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함
-    public float movingDelayTime = 1f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
+    public float movingDelayTime = 0.8f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
     int bubbleTeaLevel = 1;
