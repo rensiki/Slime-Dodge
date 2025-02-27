@@ -35,16 +35,22 @@ public class GameManager : MonoBehaviour
     public WaveManager wave;
     public PoolManager pool;
     public GameObject player;
-    public bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함
-    public float movingDelayTime = 0.8f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
+    public CameraMoving camera;
+    bool isMoving = false;//플레이어가 이동할 때 접근해서 판단할 수 있어야함//private로 설정해서 set,get으로 접근하는게 좋을듯
+    float movingDelayTime = 0.5f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
     int bubbleTeaLevel = 1;
     int bubbleTeaEnhancement = 0;
     int bubbleMana = 0;
     int PlayerTwoBlockAttackMana = 10;
+    int PlayerBothAttackMana = 20;
     public int ToalJellyStone = 0;
 
+    public bool getIsMoving()
+    {
+        return isMoving;
+    }
 
 
     private void Awake()
@@ -93,6 +99,13 @@ public class GameManager : MonoBehaviour
             PlayerTwoBlockAttack();
             Debug.Log("PlayerTwoBlockAttack");
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (bubbleMana < PlayerBothAttackMana) { return; }
+            bubbleMana -= PlayerTwoBlockAttackMana;
+            PlayerBothAttack();
+            Debug.Log("PlayerBothAttack");
+        }
         if (Input.GetKeyDown(KeyCode.O))
         {
             GameSave();
@@ -110,7 +123,7 @@ public class GameManager : MonoBehaviour
     }
     public void addTurn()
     {
-        if(!isMoving)
+        if (!isMoving)
         {
             turn++;
             isMoving = true;
@@ -118,6 +131,7 @@ public class GameManager : MonoBehaviour
             //wave.SpwanPointChange();
             wave.SpwanEnemy();
             pool.PoolsMoving();
+            camera.setCameraMoving(true);
             //Handheld.Vibrate();//진동은 배터리 엄청 소모하니까, 플레이어가 설정해서 켜고 끌 수 있도록 해야함
         }
     }
@@ -143,6 +157,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("now moving");
             yield return new WaitForSeconds(movingDelayTime);
             PlayerHitCheck();
+            camera.setCameraMoving(false);
             isMoving = false;
             Debug.Log("end moving");
         }
@@ -216,6 +231,20 @@ public class GameManager : MonoBehaviour
         }
         addTurn();
     }
+    void PlayerBothAttack()
+    {
+        if (isMoving)
+        {
+            return;
+        }
+        {
+            Vector3 rayPos = new Vector3(playerTrans.position.x + 1, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
+            rayPos = new Vector3(playerTrans.position.x - 1, playerTrans.position.y, playerTrans.position.z + 1);
+            EnemyAttackingFunc(rayPos);
+        }
+        addTurn();
+    }
 
     public void BubbleTeaLevelUp()
     {
@@ -229,7 +258,12 @@ public class GameManager : MonoBehaviour
             return;
         }
         Debug.Log("DrinkBubbleTea");
-        bubbleMana += bubbleTeaEnhancement + bubbleTeaLevel * bubbleTeaLevel;//버블티 레벨에 따른 마나 수급량이 급격히 증가함=>모아서 사용해야 효율이 더 좋음음
+        bubbleMana += bubbleTeaEnhancement + bubbleTeaLevel;
+        if (bubbleTeaLevel >= 5)
+        {
+            Debug.Log("버블티 레벨업->5추가!");
+            bubbleMana += 5;
+        }
         bubbleTeaLevel = 1;
         addTurn();
     }

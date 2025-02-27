@@ -111,21 +111,41 @@ public class WaveManager : MonoBehaviour
         switch (section)
         {
             case 1:
-                waveSize = 1;
+                pauseCount = 2;
+                leftWave = new Wave(10, 1);
+                rightWave = new Wave(10, 1);
                 break;
             case 2:
-                waveSize = 2;
-                if(stage == 1){LeftWave.PatternRatio(0, 0.8f);
-                RightWave.PatternRatio(0, 0.8f);}
-                if (stage == 2){LeftWave.PatternRatio(0, 0.6f);
-                RightWave.PatternRatio(0, 0.6f);}
+                pauseCount = 2;
+                leftWave = new Wave(15, 2);
+                rightWave = new Wave(15, 2);
+                if (stage == 1)
+                {
+                    leftWave.PatternRatio(0, 0.8f);
+                    rightWave.PatternRatio(0, 0.8f);
+                }
+                if (stage == 2)
+                {
+                    leftWave.PatternRatio(0, 0.6f);
+                    rightWave.PatternRatio(0, 0.6f);
+                }
                 break;
             case 3:
-                pauseCount = 1;
-                waveSize = 3;
-                if(stage == 1){LeftWave.PatternRatio(0, 0.5f); 
-                RightWave.PatternRatio(0, 0.5f);}
-                if()
+                pauseCount = 3;
+                leftWave = new Wave(20, 3);
+                rightWave = new Wave(20, 3);
+                if (stage == 1)
+                {
+                    leftWave.PatternRatio(0, 0.5f);
+                    rightWave.PatternRatio(0, 0.5f);
+                }
+                if (stage == 2)
+                {
+                    leftWave.PatternRatio(0, 0.5f);
+                    rightWave.PatternRatio(0, 0.5f);
+                    leftWave.PatternRatio(2, 0.3f);
+                    rightWave.PatternRatio(2, 0.3f);
+                }
                 break;
             case 4:
                 break;
@@ -143,17 +163,17 @@ public class WaveManager : MonoBehaviour
         Debug.Log("Already started!");
         return;
     }
-    if(stage >= 2)
+    if(stage >= 3)
     {
         section++;
         Debug.Log("Section : " + section +" Started!");
         nowStage = false;
+        stage = 1;
         return;
     }
+    leftWave = new Wave();
+    rightWave = new Wave();
     SectionFunction();
-    waveSize = stage * 5;
-    leftWave = new Wave(waveSize, stage);
-    rightWave = new Wave(waveSize, stage);
     nowStage = true;
     stage++;
 }

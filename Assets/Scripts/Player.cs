@@ -8,16 +8,12 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 이 게임의 핵심인 플레이어의 이동만을 담당하는 코드. 플레이어 오브젝트에 붙어있음.
     /// 나머지 일반공격이나 스킬과 같은 터치 조작들은 GameManager에서 처리함.
-    /// 즉, 자이로스코프 기능은 이곳에서만 사용할 것이고, 나머지 터치 조작은 GameManager에서 처리할 것임.(플레이어 캐릭터와 터치 조작의 독립성 보장)
+    /// 즉, 자이로스코프 기능은 이곳에서만 사용할 것이고, 나머지 터치 조작은 GameManager에서 처리할 것임.(플레이어 캐릭터와 터치 조작의 독립성 보장)..? 터치는 한꺼번에 처리하는게 좋지 않을까..?
     /// </summary>
-
-
 
     // Start is called before the first frame update
     Rigidbody2D rb;
     Transform trans;
-
-
 
     //bool isMoving = false;//GameManager에서 총 관리함. 턴 개념과 깊게 연관된 변수이기 때문
     bool isTwoTouching = false;
@@ -81,11 +77,11 @@ public class Player : MonoBehaviour
 
                 //if문으로 2개 터치중 할 필요 없을듯 
                 //왜냐면 2개 터치중이 아닐때는 아래의 코드가 실행되지 않기 때문
-                if (Input.gyro.rotationRateUnbiased.y > 2 && !GameManager.Instance.isMoving)
+                if (Input.gyro.rotationRateUnbiased.y > 2 && !GameManager.Instance.getIsMoving())
                 {
                     MoveCallingSetting(MovingState.RIGHT);
                 }
-                else if (Input.gyro.rotationRateUnbiased.y < -2 && !GameManager.Instance.isMoving)
+                else if (Input.gyro.rotationRateUnbiased.y < -2 && !GameManager.Instance.getIsMoving())
                 {
                     MoveCallingSetting(MovingState.LEFT);
                 }
@@ -111,7 +107,7 @@ public class Player : MonoBehaviour
 
     void MoveCallingSetting(MovingState state)
     {
-        if (GameManager.Instance.isMoving)//이동 딜레이중에는 방향도 바꿀 수 없도록 이곳에다 빠져나가는 코드 추가
+        if (GameManager.Instance.getIsMoving())//이동 딜레이중에는 방향도 바꿀 수 없도록 이곳에다 빠져나가는 코드 추가
         {
             return;
         }  

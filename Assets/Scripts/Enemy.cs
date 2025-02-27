@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     public float speed = 0.1f;//이동하는 속도
     public float a = 5f;//2차함수의 a값. 즉 곡선의 높이
     //public float movingDelayTime = 0.01f;//fixed update구조로 변경하면서 필요없어짐
-    float movingTime = 0.5f;//enemy가 움직이는 시간. 플레이어의 moving delay보다는 작게 설정해서 오류 가능성을 줄임임
+    float movingTime = 0.4f;//enemy가 움직이는 시간. 플레이어의 moving delay보다는 작게 설정해서 오류 가능성을 줄임임
     public int jellyStone = 0;//젤리석이 떨어지는 횟수
     int mapWidth = 8;//맵의 너비
 
