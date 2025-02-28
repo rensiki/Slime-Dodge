@@ -40,17 +40,15 @@ public class GameManager : MonoBehaviour
     float movingDelayTime = 0.5f;//플레이어가 이동하는 시간. 즉, 적이 이동하는 enemy turn time이라고 보면 됨. 매우 세심하게 조정해야함.
     Transform playerTrans;
     int turn; //private로 설정해서 set,get으로 접근하는게 좋을듯
-    int bubbleTeaLevel = 1;
+    int bubbleTeaLevel = 1;//초기상태에서 사용해도 마나 얻을 수 있도록 1로 설정
     int bubbleTeaEnhancement = 0;
     int bubbleMana = 0;
     int PlayerTwoBlockAttackMana = 10;
     int PlayerBothAttackMana = 20;
     public int ToalJellyStone = 0;
 
-    public bool getIsMoving()
-    {
-        return isMoving;
-    }
+    public bool getIsMoving(){return isMoving;}
+    public void InitializeStatus(){ bubbleTeaLevel = 0; bubbleMana = 0; }
 
 
     private void Awake()
@@ -102,7 +100,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (bubbleMana < PlayerBothAttackMana) { return; }
-            bubbleMana -= PlayerTwoBlockAttackMana;
+            bubbleMana -= PlayerBothAttackMana;
             PlayerBothAttack();
             Debug.Log("PlayerBothAttack");
         }
@@ -258,11 +256,11 @@ public class GameManager : MonoBehaviour
             return;
         }
         Debug.Log("DrinkBubbleTea");
-        bubbleMana += bubbleTeaEnhancement + bubbleTeaLevel;
+        bubbleMana += bubbleTeaLevel;
         if (bubbleTeaLevel >= 5)
         {
-            Debug.Log("버블티 레벨업->5추가!");
-            bubbleMana += 5;
+            Debug.Log("버블티 레벨업->5+bubbleTeaEnhancement추가!");
+            bubbleMana += 5 + bubbleTeaEnhancement;
         }
         bubbleTeaLevel = 1;
         addTurn();

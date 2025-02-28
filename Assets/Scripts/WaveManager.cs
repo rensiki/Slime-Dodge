@@ -116,7 +116,7 @@ public class WaveManager : MonoBehaviour
                 rightWave = new Wave(10, 1);
                 break;
             case 2:
-                pauseCount = 2;
+                pauseCount = 3;
                 leftWave = new Wave(15, 2);
                 rightWave = new Wave(15, 2);
                 if (stage == 1)
@@ -131,7 +131,7 @@ public class WaveManager : MonoBehaviour
                 }
                 break;
             case 3:
-                pauseCount = 3;
+                pauseCount = 4;
                 leftWave = new Wave(20, 3);
                 rightWave = new Wave(20, 3);
                 if (stage == 1)
@@ -148,6 +148,21 @@ public class WaveManager : MonoBehaviour
                 }
                 break;
             case 4:
+                pauseCount = 6;
+                leftWave = new Wave(25, 3);
+                rightWave = new Wave(25, 3);
+                if (stage == 1)
+                {
+                    leftWave.PatternRatio(0, 0.6f);
+                    rightWave.PatternRatio(0, 0.6f);
+                }
+                if (stage == 2)
+                {
+                    leftWave.PatternRatio(0, 0.6f);
+                    rightWave.PatternRatio(0, 0.6f);
+                    leftWave.PatternRatio(1, 0.3f);
+                    rightWave.PatternRatio(1, 0.3f);
+                }
                 break;
             case 5:
                 break;
@@ -168,11 +183,10 @@ public class WaveManager : MonoBehaviour
         section++;
         Debug.Log("Section : " + section +" Started!");
         nowStage = false;
+        GameManager.Instance.InitializeStatus();
         stage = 1;
         return;
     }
-    leftWave = new Wave();
-    rightWave = new Wave();
     SectionFunction();
     nowStage = true;
     stage++;
@@ -285,7 +299,7 @@ public class WaveManager : MonoBehaviour
             if(hit.collider.tag == "Enemy")
             {
                 Debug.Log(hit.collider.name);
-                hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
+                //hit.collider.GetComponent<Transform>().position = new Vector3(hit.collider.GetComponent<Transform>().position.x, 4,0);
                 return true;
             }
         }
@@ -295,12 +309,13 @@ public class WaveManager : MonoBehaviour
     bool pauseTurn()
     {
         turnCounter++;
-        if(turnCounter >= pauseCount)
+        Debug.Log("turnCounter: " + turnCounter +", pasueCounter" + pauseCount);
+        if (turnCounter >= pauseCount)
         {
             turnCounter = 0;
             return true;
         }
-        else{ return false; }
+        else { return false; }
     }
 
 }
