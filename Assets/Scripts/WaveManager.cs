@@ -94,7 +94,7 @@ public class WaveManager : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space) && !nowStage)
+        if (Input.GetKeyDown(KeyCode.Z) && !nowStage)
         {
             Debug.Log("Stage Started!");
             StartStage();
