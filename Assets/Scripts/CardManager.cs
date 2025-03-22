@@ -4,28 +4,6 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    class Card
-    {
-        public Card(string Name, int Cost, int Card_Value, int Repeat, bool IsOneOff = false)
-        {
-            name = Name; cost = Cost; card_value = Card_Value; repeat = Repeat;
-            isOneOff = IsOneOff;
-        }
-        string name { get; set; }
-        int cost
-        {
-            get { return cost; }
-            set { Debug.Log(name + ": cost를" + value + "으로 변경"); cost = value; }
-        }
-        int card_value
-        {
-            get { return card_value; }
-            set { Debug.Log(name + ": card_value" + value + "으로 변경"); card_value = value; }
-        }
-        bool isOneOff;
-        int repeat;
-        string enchant = "none";
-    }
     class Hand
     {
         public Hand(int Hand_Num)
@@ -60,19 +38,15 @@ public class CardManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("DrinkBubbleTea");
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            Debug.Log("PlayerNormalAttack");
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("PlayerTwoBlockAttack");
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("PlayerBothAttack");
         }
     }
     
