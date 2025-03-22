@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         UIbubbleMana.text = "BubbleMana : " + bubbleMana;
         UIbubbleTeaLevel.text = "BubbleTeaLevel : " + bubbleTeaLevel;
 
-        if (Input.GetKeyDown(KeyCode.W))
+        /*if (Input.GetKeyDown(KeyCode.W))
         {
             DrinkBubbleTea();
             Debug.Log("DrinkBubbleTea");
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
             bubbleMana -= PlayerBothAttackMana;
             PlayerBothAttack();
             Debug.Log("PlayerBothAttack");
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.O))
         {
             GameSave();

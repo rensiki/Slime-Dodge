@@ -77,7 +77,7 @@ public class WaveManager : MonoBehaviour
     int waveSize = 10;
     public bool nowStage = false;//pool에서 적을 소환할지 말지 결정하는 변수.. 스테이지가 진행중인지 아닌지는 명확히 모름... 수정 필요=>false로 바꿔주는 코드를 제거하고 poolmanager에서 접근할 수 있도록 변경해야함
     public Wave leftWave;
-    public Wave rightWave;
+    public Wave rightWave; 
     public Transform leftSpawnPoint;
     public Transform rightSpawnPoint;
     float leftSpawnPointXnum = 0;
