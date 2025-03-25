@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ef404344ef364693404203a345141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: OneAttack
+  name: OneAttackCard
   cost: 1
   card_value: 1
   isOneOff: 0

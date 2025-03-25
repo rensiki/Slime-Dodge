@@ -6,31 +6,41 @@ public class CardManager : MonoBehaviour
 {
     class Hand
     {
-        public Hand(int Hand_Num)
+        public Hand(int Hand_Num, Transform MyPos)
         {
             hand_Num = Hand_Num;
+            myPos = MyPos;
         }
-        int hand_Num{get; set;}
-        Card hand_card{get; set;}
+        public string getCardName() {
+            return hand_card.name;
+        }
+        public Card getCard()
+        {
+            if (hasCard == false)
+            {
+                return null;
+            }
+            if (hand_card == null)
+            {
+                Debug.LogWarning(hand_Num + ": hand is null!");
+            }
+            hasCard = false;
+            return hand_card;
+        }
+        int hand_Num { get; set; }
+        bool hasCard = false;
+        Transform myPos;
+        Card hand_card;
     }
-
-    Dictionary<string, Card> all_cards
-    = new Dictionary<string, Card>();
+    public List<Card> all_casds = new List<Card>();
+    public List<Transform> hand_Pos = new List<Transform>();
+    public List<Card> myCards = new List<Card>();
+    Hand[] hands;
 
     void Start()
     {
-        //구체적인 마나 소모량은 직접 플레이해보며 수정해봐야할듯. 혹은 테스터 모집!
-        all_cards.Add("OneAttack", new Card("OneAttack", 1, 1, 0));
-        //all_cards.Add("TwoAttack", new Card("TwoAttack", 5, 2, 1));
-        //all_cards.Add("ThreeAttack", new Card("ThreeAttack", 10, 3, 2));
-        all_cards.Add("OneBothAttack", new Card("OneBothAttack", 10, 3, 0));
-        //all_cards.Add("TwoBothAttack", new Card("TwoBothAttack", 20, 5, 1));
-        //all_cards.Add("ThreeBothAttack", new Card("ThreeBothAttack", 30, 7, 2));
-        all_cards.Add("ShootingOneAttack", new Card("ShootingOneAttack", 20, 5, 0));
-        //all_cards.Add("ShootingTwoAttack", new Card("ShootingTwoAttack", 30, 5, 1));
-        //all_cards.Add("ShootingThreeAttack", new Card("ShootingThreeAttack", 40, 5, 2));
-
-        Hand[] hands = new Hand[4] {new Hand(0), new Hand(1), new Hand(2), new Hand(3)};
+        hands = new Hand[4] {new Hand(0, hand_Pos[0])
+        , new Hand(1, hand_Pos[1]), new Hand(2, hand_Pos[2]), new Hand(3, hand_Pos[3])};
 
     }
 
@@ -38,6 +48,7 @@ public class CardManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            activateCard(hands[0].hand_card.name);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -47,6 +58,25 @@ public class CardManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
+        }
+    }
+    void activateCard(string name) {
+        if (name == null)
+        {
+            Debug.LogWarning("card's name is null!");
+        }
+
+        if (name == "OneAttackCard")
+        {
+            Debug.Log("OneAttackCard activated!");
+        }
+        else if (name == "BothAttackCard")
+        {
+            Debug.Log("BothAttackCard activated!");
+        }
+        else if (name == "ShootingAttackCard")
+        {
+            Debug.Log("ShootingAttackCard activated!");
         }
     }
     
